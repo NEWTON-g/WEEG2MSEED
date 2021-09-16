@@ -9,7 +9,8 @@ def map_name(name):
 
   """
   def map_name
-  Maps an input name to a tuple (column, dataframe entry, and mSEED channel code)
+  Maps an input name to a tuple (dataframe entry, and mSEED channel code, gain)
+  All values are converted to integers for STEIM2 compression
   
   mSEED channel codes have three identifiers: 
     1. Sampling rate (M) for medium
@@ -20,12 +21,18 @@ def map_name(name):
 
   # Gravity codes: quality code will be different
   if name == "raw_gravity":
-    return ("CH4R", "MGZ")
+    return ("CH4R", "MGZ", 1E0)
+
   # Pressure codes
-  elif name == "environmental_pressure":
-    return ("BME280_P", "MDO")
-  elif name == "environmental_temperature":
-    return ("BME280_T", "MK1")
+  elif name == "enclosure_temperature":
+    return ("AD7195_1_Ch1", "MK1", 1E6)
+
+  # Tilts
+  elif name == "tilt_x":
+    return ("tilt_X", "MA1", 1E6)
+  elif name == "tilt_z":
+    return ("tilt_Z", "MA2", 1E6)
+
   else:
     raise ValueError("Invalid field %s requested." % name)
 
@@ -36,28 +43,24 @@ def convert(filename, network, station, location, names):
   Author: Mathijs Koymans, 2020
   """
 
-  custom_date_parser = lambda x: datetime.datetime.strptime(x, "%Y%m%d_%H:%M:%S")
-
   # Sampling interval tolerance (s)
   EPSILON = 0.01
   # The AQG samples at 0.54 seconds instead of 2Hz
   SAMPLING_INT = 1
 
-  quality = "Q"
+  quality = "D"
 
   print("Reading MEMS input file %s." % filename)
+
+  # Date parsing function
+  custom_date_parser = lambda x: datetime.datetime.strptime(x, "%Y%m%d_%H:%M:%S")
 
   # Read the supplied AQG datafile to a dataframe.
   # We use the timestamp (0) and the requested column index (see map_name)
   df = pd.read_csv(filename, delimiter=",", parse_dates=["TIME"], date_parser=custom_date_parser, usecols=range(0, 13))
-  df = df[~np.isnan(df["CH4R"])]
-  df = df[df["CH4R"] > 10]
-
-  timestamps = df["TIME"]
 
   # Get the true sampling interval between the samples to identify gaps
-  differences = 1E-9 * np.diff(timestamps)
-  differences = np.array(differences, dtype=np.float64)
+  differences = 1E-9 * np.diff(df["TIME"]).astype(np.float64)
 
   # Check whether the sampling interval is within a tolerance: otherwise we create a reference
   # to the index where the gap is. We will use these indices to create individual traces.
@@ -79,7 +82,7 @@ def convert(filename, network, station, location, names):
     st = obspy.Stream()
 
     # Map the requested data file
-    (column, channel) = map_name(name)
+    (column, channel, gain) = map_name(name)
 
     # Define the mSEED header
     # Sampling rate should be rounded to 6 decimals.. floating point issues
@@ -89,13 +92,16 @@ def convert(filename, network, station, location, names):
       "station": station,
       "location": location,
       "channel": channel,
-      "mseed": {"dataquality": "Q"},
+      "mseed": {"dataquality": quality},
       "sampling_rate": np.round((1. / SAMPLING_INT), 6)
     })
 
+    ndf = df[~np.isnan(df[column])]
+
     # Reference the data and convert to int32 for storage. mSEED cannot store long long (64-bit) integers.
     # Can we think of a clever trick? STEIM2 compression (factor 3) is available for integers, not for ints.
-    data = np.array(df[column], dtype="int32")
+    data = (int(gain) * np.array(ndf[column])).astype("int32")
+    timestamps = ndf["TIME"]
 
     # Calculate the bitwise xor of all gravity data samples as checksum
     # After writing to mSEED, we apply xor again and the result should come down to 0 
@@ -115,7 +121,7 @@ def convert(filename, network, station, location, names):
       header["starttime"] = obspy.UTCDateTime(timestamps.iloc[start])
 
       # Get the array slice between start & end and add it to the existing stream
-      tr = obspy.Trace(data[start:end].astype("int32"), header=header)
+      tr = obspy.Trace(data[start:end], header=header)
 
       print("Adding trace [%s]." % tr)
 

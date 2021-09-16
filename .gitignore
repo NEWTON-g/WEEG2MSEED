@@ -3,3 +3,5 @@ mseed
 .DS_STORE
 *.swp
 *.swo
+*.pyc
+__pycache__

@@ -1,6 +1,6 @@
 import os
 
-from src.mems2mseed import convert
+from src.weeg2mseed import convert
 
 if __name__ == "__main__":
 
@@ -12,9 +12,13 @@ if __name__ == "__main__":
   # Columns to write to mSEED: each will be a channel
   columns = [
     "raw_gravity",
+    "enclosure_temperature",
+    "tilt_x",
+    "tilt_z"
   ]
 
   # Network identifier (NEWTON-g), station identifier (AQG), and location ("")
+  # https://www.fdsn.org/networks/detail/2Q_2020/
   network = "2Q"
   station = "NTG04"
   location = ""
@@ -24,6 +28,9 @@ if __name__ == "__main__":
   path2 = "mseed"
 
   for file in os.listdir(path):
+
+    if file.startswith("."):
+      continue
 
     filepath = os.path.join(path, file)
 
