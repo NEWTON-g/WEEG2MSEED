@@ -20,18 +20,26 @@ def map_name(name):
   """
 
   # Gravity codes: quality code will be different
-  if name == "raw_gravity":
-    return ("CH4R", "LGZ", 1E0)
+  if name == "CH4R":
+    return ("LGZ", 1E0)
 
-  # Pressure codes
-  elif name == "enclosure_temperature":
-    return ("AD7195_1_Ch1", "LK1", 1E6)
+  # Temperature channels
+  elif name == "AD7195_1_Ch1":
+    return ("LK1", 1E6)
+  elif name == "AD7195_1_Ch2":
+    return ("LK2", 1E6)
+  elif name == "AD7195_2_Ch1":
+    return ("LK3", 1E6)
+  elif name == "AD7195_2_Ch2":
+    return ("LK4", 1E6)
+  elif name == "AD7195_3_Ch1":
+    return ("LK5", 1E6)
 
   # Tilts
-  elif name == "tilt_x":
-    return ("tilt_X", "LA1", 1E6)
-  elif name == "tilt_z":
-    return ("tilt_Z", "LA2", 1E6)
+  elif name == "tilt_X":
+    return ("LA1", 1E6)
+  elif name == "tilt_Z":
+    return ("LA2", 1E6)
 
   else:
     raise ValueError("Invalid field %s requested." % name)
@@ -82,7 +90,7 @@ def convert(filename, network, station, location, names):
     st = obspy.Stream()
 
     # Map the requested data file
-    (column, channel, gain) = map_name(name)
+    (channel, gain) = map_name(name)
 
     # Define the mSEED header
     # Sampling rate should be rounded to 6 decimals.. floating point issues
@@ -96,11 +104,11 @@ def convert(filename, network, station, location, names):
       "sampling_rate": np.round((1. / SAMPLING_INT), 6)
     })
 
-    ndf = df[~np.isnan(df[column])]
+    ndf = df[~np.isnan(df[name])]
 
     # Reference the data and convert to int32 for storage. mSEED cannot store long long (64-bit) integers.
     # Can we think of a clever trick? STEIM2 compression (factor 3) is available for integers, not for ints.
-    data = (int(gain) * np.array(ndf[column])).astype("int32")
+    data = (int(gain) * np.array(ndf[name])).astype("int32")
     timestamps = ndf["TIME"]
 
     # Calculate the bitwise xor of all gravity data samples as checksum

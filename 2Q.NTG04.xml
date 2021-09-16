@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0">
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.1">
   <Source>NEWTON-g Consortium</Source>
   <Sender>NEWTON-g</Sender>
   <Created>2021-09-16T11:53:00</Created>
+
   <Network code="2Q" startDate="2020-07-01T00:00:00" restrictedStatus="closed">
-    <Description>Netherlands Seismic and Acoustic Network</Description>
-    <Station code="NTG04" startDate="2020-07-01T00:00:00" restrictedStatus="closed">
+    <Description>NEWTON-g Gravity Imager Network on Mt. Etna</Description>
+
+    <Station code="NTG04" startDate="2021-09-03T00:00:00" restrictedStatus="closed">
       <Latitude>37.765890</Latitude>
       <Longitude>15.016805</Longitude>
       <Elevation>2920</Elevation>
@@ -13,10 +15,9 @@
         <Name>Serra La Nave, Astrophysical Observatory National Institute for Astrophysics (SLN)</Name>
         <Country>Italy</Country>
       </Site>
-      <CreationDate>2021-06-06T00:00:00</CreationDate>
+      <CreationDate>2021-09-06T00:00:00</CreationDate>
 
-      <!-- Gravity Channel -->
-      <Channel code="LGZ" startDate="2020-07-01T00:00:00" restrictedStatus="closed" locationCode="">
+      <Channel code="LGZ" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
         <Latitude>37.69312</Latitude>
         <Longitude>14.97439</Longitude>
         <Elevation>1735</Elevation>
@@ -28,7 +29,6 @@
           <NumberSamples>1</NumberSamples>
           <NumberSeconds>1</NumberSeconds>
         </SampleRateRatio>
-        <StorageFormat>STEIM2</StorageFormat>
         <ClockDrift>0</ClockDrift>
         <Sensor>
           <Type>Wee-g</Type>
@@ -58,8 +58,8 @@
         </Response>
       </Channel>
 
-      <!-- Sensor Head Temperature Channel -->
-      <Channel code="LK1" startDate="2020-07-01T00:00:00" restrictedStatus="closed" locationCode="">
+      <Channel code="LK1" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Temperature of outer thermal enclosure layer (Celcius)</Description>
         <Latitude>37.69312</Latitude>
         <Longitude>14.97439</Longitude>
         <Elevation>1735</Elevation>
@@ -71,7 +71,6 @@
           <NumberSamples>1</NumberSamples>
           <NumberSeconds>1</NumberSeconds>
         </SampleRateRatio>
-        <StorageFormat>STEIM2</StorageFormat>
         <ClockDrift>0</ClockDrift>
         <Sensor>
           <Type>TBD</Type>
@@ -93,12 +92,6 @@
             </OutputUnits>
           </InstrumentSensitivity>
           <Stage number="1">
-            <InputUnits>
-              <Name>CELSIUS</Name>
-            </InputUnits>
-            <OutputUnits>
-              <Name>COUNTS</Name>
-            </OutputUnits>
             <StageGain>
               <Value>1E3</Value>
               <Frequency>0</Frequency>
@@ -107,8 +100,8 @@
         </Response>
       </Channel>
 
-      <!-- Tilt X Channel -->
-      <Channel code="LA1" startDate="2020-07-01T00:00:00" restrictedStatus="closed" locationCode="">
+      <Channel code="LK2" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Temperature of main enclosure (Celcius)</Description>
         <Latitude>37.69312</Latitude>
         <Longitude>14.97439</Longitude>
         <Elevation>1735</Elevation>
@@ -120,7 +113,174 @@
           <NumberSamples>1</NumberSamples>
           <NumberSeconds>1</NumberSeconds>
         </SampleRateRatio>
-        <StorageFormat>STEIM2</StorageFormat>
+        <ClockDrift>0</ClockDrift>
+        <Sensor>
+          <Type>TBD</Type>
+          <Description>TBD</Description>
+          <Model>TBD</Model>
+        </Sensor>
+        <DataLogger>
+          <Description></Description>
+        </DataLogger>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1E6</Value>
+            <Frequency>0</Frequency>
+            <InputUnits>
+              <Name>CELSIUS</Name>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <StageGain>
+              <Value>1E3</Value>
+              <Frequency>0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+
+      <Channel code="LK3" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Temperature of sensor outside of enclosure, on top of the device (Celcius)</Description>
+        <Latitude>37.69312</Latitude>
+        <Longitude>14.97439</Longitude>
+        <Elevation>1735</Elevation>
+        <Depth>0</Depth>
+        <Azimuth>0</Azimuth>
+        <Dip>-90</Dip>
+        <SampleRate>1</SampleRate>
+        <SampleRateRatio>
+          <NumberSamples>1</NumberSamples>
+          <NumberSeconds>1</NumberSeconds>
+        </SampleRateRatio>
+        <ClockDrift>0</ClockDrift>
+        <Sensor>
+          <Type>TBD</Type>
+          <Description>TBD</Description>
+          <Model>TBD</Model>
+        </Sensor>
+        <DataLogger>
+          <Description></Description>
+        </DataLogger>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1E6</Value>   
+            <Frequency>0</Frequency>
+            <InputUnits>
+              <Name>CELSIUS</Name>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <StageGain>
+              <Value>1E3</Value> 
+              <Frequency>0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+
+      <Channel code="LK4" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Temperature of inner thermal enclosure layer (Celcius)</Description>
+        <Latitude>37.69312</Latitude>
+        <Longitude>14.97439</Longitude>
+        <Elevation>1735</Elevation>
+        <Depth>0</Depth>
+        <Azimuth>0</Azimuth>
+        <Dip>-90</Dip>
+        <SampleRate>1</SampleRate>
+        <SampleRateRatio>
+          <NumberSamples>1</NumberSamples>
+          <NumberSeconds>1</NumberSeconds>
+        </SampleRateRatio>
+        <ClockDrift>0</ClockDrift>
+        <Sensor>
+          <Type>TBD</Type>
+          <Description>TBD</Description>
+          <Model>TBD</Model>
+        </Sensor>
+        <DataLogger>
+          <Description></Description>
+        </DataLogger>    
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1E6</Value>
+            <Frequency>0</Frequency>
+            <InputUnits>
+              <Name>CELSIUS</Name>
+            </InputUnits>
+            <OutputUnits> 
+              <Name>COUNTS</Name>
+            </OutputUnits> 
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <StageGain>
+              <Value>1E3</Value>
+              <Frequency>0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+
+      <Channel code="LK5" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Temperature of MEMS package sensor (Celcius)</Description>
+        <Latitude>37.69312</Latitude>
+        <Longitude>14.97439</Longitude>
+        <Elevation>1735</Elevation>
+        <Depth>0</Depth>
+        <Azimuth>0</Azimuth>
+        <Dip>-90</Dip>
+        <SampleRate>1</SampleRate>
+        <SampleRateRatio>
+          <NumberSamples>1</NumberSamples>
+          <NumberSeconds>1</NumberSeconds>
+        </SampleRateRatio>
+        <ClockDrift>0</ClockDrift>
+        <Sensor>
+          <Type>TBD</Type>
+          <Description>TBD</Description>
+          <Model>TBD</Model>
+        </Sensor>
+        <DataLogger>
+          <Description></Description>
+        </DataLogger>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1E6</Value>
+            <Frequency>0</Frequency>
+            <InputUnits>
+              <Name>CELSIUS</Name>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <StageGain>
+              <Value>1E3</Value>
+              <Frequency>0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+
+      <Channel code="LA1" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Tilt in orthogonal direction of the device (radians)</Description>
+        <Latitude>37.69312</Latitude>
+        <Longitude>14.97439</Longitude>
+        <Elevation>1735</Elevation>
+        <Depth>0</Depth>
+        <Azimuth>0</Azimuth>
+        <Dip>-90</Dip>
+        <SampleRate>1</SampleRate>
+        <SampleRateRatio>
+          <NumberSamples>1</NumberSamples>
+          <NumberSeconds>1</NumberSeconds>
+        </SampleRateRatio>
         <ClockDrift>0</ClockDrift>
         <Sensor>
           <Type>TBD</Type>
@@ -142,12 +302,6 @@
             </OutputUnits>
           </InstrumentSensitivity>
           <Stage number="1">
-            <InputUnits>
-              <Name>RAD</Name>
-            </InputUnits>
-            <OutputUnits>
-              <Name>COUNTS</Name>
-            </OutputUnits>
             <StageGain>
               <Value>1E6</Value>
               <Frequency>0</Frequency>
@@ -156,8 +310,8 @@
         </Response>
       </Channel>
 
-      <!-- Tilt Y Channel -->
-      <Channel code="LA2" startDate="2020-07-01T00:00:00" restrictedStatus="closed" locationCode="">
+      <Channel code="LA2" startDate="2021-09-03T00:00:00" restrictedStatus="closed" locationCode="">
+        <Description>Tilt in orthogonal direction of the device (radians)</Description>
         <Latitude>37.69312</Latitude>
         <Longitude>14.97439</Longitude>
         <Elevation>1735</Elevation>
@@ -169,7 +323,6 @@
           <NumberSamples>1</NumberSamples>
           <NumberSeconds>1</NumberSeconds>
         </SampleRateRatio>
-        <StorageFormat>STEIM2</StorageFormat>
         <ClockDrift>0</ClockDrift>
         <Sensor>
           <Type>TBD</Type>
@@ -184,19 +337,13 @@
             <Value>1E6</Value>
             <Frequency>0</Frequency>
             <InputUnits>
-              <Name>MRAD</Name>
+              <Name>RAD</Name>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
             </OutputUnits>
           </InstrumentSensitivity>
           <Stage number="1">
-            <InputUnits>
-              <Name>MRAD</Name>
-            </InputUnits>
-            <OutputUnits>
-              <Name>COUNTS</Name>
-            </OutputUnits>
             <StageGain>
               <Value>1E6</Value>
               <Frequency>0</Frequency>
