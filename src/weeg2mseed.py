@@ -1,6 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import sys
 import datetime
 import numpy as np
 import obspy
@@ -10,7 +8,7 @@ def map_name(name):
   """
   def map_name
   Maps an input name to a tuple (dataframe entry, and mSEED channel code, gain)
-  All values are converted to integers for STEIM2 compression
+  All values are converted to integers (COUNTS) for STEIM2 compression following the gain
   
   mSEED channel codes have three identifiers: 
     1. Sampling rate (M) for medium
@@ -19,7 +17,7 @@ def map_name(name):
   Refer to the mSEED manual
   """
 
-  # Gravity codes: QUALITY code will be different
+  # Gravity codes
   if name == "CH4R":
     return ("LGZ", 1E0)
 
@@ -51,6 +49,7 @@ def convert(filename, network, station, location, names):
   Author: Mathijs Koymans, 2021
   """
 
+  # Parameters
   SAMPLING_INT = 1
   QUALITY = "D"
 
@@ -85,7 +84,7 @@ def convert(filename, network, station, location, names):
       "station": station,
       "location": location,
       "channel": channel,
-      "mseed": {"dataQUALITY": QUALITY},
+      "mseed": {"dataquality": QUALITY},
       "sampling_rate": SAMPLING_INT,
     })
 
@@ -172,7 +171,7 @@ def convert(filename, network, station, location, names):
     # One problem here is that if one day if spread in two files it overwrites the first file
     while(start_date <= end_date):
 
-      # Filename is network, station, location, channel, QUALITY (D), year, day of year delimited by a period
+      # Filename is network, station, location, channel, quality (D), year, day of year delimited by a period
       filename = ".".join([
         network,
         station,

@@ -14,7 +14,6 @@ if __name__ == "__main__":
 
   # Read gravity channel
   grav = read("mseed/LGZ.D/2Q.NTG04..LGZ.D.2021.249")
-  print(grav[0].stats, grav[0].data)
   show(inventory, grav)
 
   # Read tilt X channel

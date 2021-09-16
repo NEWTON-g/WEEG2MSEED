@@ -16,7 +16,7 @@ if __name__ == "__main__":
     "tilt_X", "tilt_Z"
   ]
 
-  # Network identifier (NEWTON-g), station identifier (AQG), and location ("")
+  # Network identifier (NEWTON-g), station identifier (NTG04), and location ("")
   # https://www.fdsn.org/networks/detail/2Q_2020/
   network = "2Q"
   station = "NTG04"
