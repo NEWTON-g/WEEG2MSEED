@@ -21,17 +21,17 @@ def map_name(name):
 
   # Gravity codes: quality code will be different
   if name == "raw_gravity":
-    return ("CH4R", "MGZ", 1E0)
+    return ("CH4R", "LGZ", 1E0)
 
   # Pressure codes
   elif name == "enclosure_temperature":
-    return ("AD7195_1_Ch1", "MK1", 1E6)
+    return ("AD7195_1_Ch1", "LK1", 1E6)
 
   # Tilts
   elif name == "tilt_x":
-    return ("tilt_X", "MA1", 1E6)
+    return ("tilt_X", "LA1", 1E6)
   elif name == "tilt_z":
-    return ("tilt_Z", "MA2", 1E6)
+    return ("tilt_Z", "LA2", 1E6)
 
   else:
     raise ValueError("Invalid field %s requested." % name)
