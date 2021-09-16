@@ -19,7 +19,7 @@ def map_name(name):
   Refer to the mSEED manual
   """
 
-  # Gravity codes: quality code will be different
+  # Gravity codes: QUALITY code will be different
   if name == "CH4R":
     return ("LGZ", 1E0)
 
@@ -47,16 +47,12 @@ def map_name(name):
 def convert(filename, network, station, location, names):
 
   """
-  Script to convert AQG gravimeter data to mSEED using ObsPy
-  Author: Mathijs Koymans, 2020
+  Script to convert Wee-g gravimeter data to mSEED using ObsPy
+  Author: Mathijs Koymans, 2021
   """
 
-  # Sampling interval tolerance (s)
-  EPSILON = 0.01
-  # The AQG samples at 0.54 seconds instead of 2Hz
   SAMPLING_INT = 1
-
-  quality = "D"
+  QUALITY = "D"
 
   print("Reading MEMS input file %s." % filename)
 
@@ -67,19 +63,6 @@ def convert(filename, network, station, location, names):
   # We use the timestamp (0) and the requested column index (see map_name)
   df = pd.read_csv(filename, delimiter=",", parse_dates=["TIME"], date_parser=custom_date_parser, usecols=range(0, 13))
 
-  # Get the true sampling interval between the samples to identify gaps
-  differences = 1E-9 * np.diff(df["TIME"]).astype(np.float64)
-
-  # Check whether the sampling interval is within a tolerance: otherwise we create a reference
-  # to the index where the gap is. We will use these indices to create individual traces.
-  indices = np.flatnonzero(
-    (differences < (SAMPLING_INT - EPSILON)) |
-    (differences > (SAMPLING_INT + EPSILON))
-  )
-
-  # Add one to split on the correct sample since np.diff reduced the index by one
-  indices += 1
-  
   # Collection of files to return after conversion
   files = list()
 
@@ -92,6 +75,8 @@ def convert(filename, network, station, location, names):
     # Map the requested data file
     (channel, gain) = map_name(name)
 
+    print("Converting channel %s to %s." % (name, channel))
+
     # Define the mSEED header
     # Sampling rate should be rounded to 6 decimals.. floating point issues
     header = dict({
@@ -100,16 +85,29 @@ def convert(filename, network, station, location, names):
       "station": station,
       "location": location,
       "channel": channel,
-      "mseed": {"dataquality": quality},
-      "sampling_rate": np.round((1. / SAMPLING_INT), 6)
+      "mseed": {"dataQUALITY": QUALITY},
+      "sampling_rate": SAMPLING_INT,
     })
 
     ndf = df[~np.isnan(df[name])]
+    timestamps = ndf["TIME"]
+
+    # Get the true sampling interval between the samples to identify gaps in seconds (this is datetime64[ns])
+    differences = 1E-9 * np.diff(timestamps).astype(np.float64)
+
+    # Check whether the sampling interval is within a tolerance: otherwise we create a reference
+    # to the index where the gap is. We will use these indices to create individual traces.
+    indices = np.flatnonzero(
+      (differences < SAMPLING_INT) |
+      (differences > SAMPLING_INT)
+    )
+
+    # Add one to split on the correct sample since np.diff reduced the index by one
+    indices += 1
 
     # Reference the data and convert to int32 for storage. mSEED cannot store long long (64-bit) integers.
     # Can we think of a clever trick? STEIM2 compression (factor 3) is available for integers, not for ints.
     data = (int(gain) * np.array(ndf[name])).astype("int32")
-    timestamps = ndf["TIME"]
 
     # Calculate the bitwise xor of all gravity data samples as checksum
     # After writing to mSEED, we apply xor again and the result should come down to 0 
@@ -174,20 +172,20 @@ def convert(filename, network, station, location, names):
     # One problem here is that if one day if spread in two files it overwrites the first file
     while(start_date <= end_date):
 
-      # Filename is network, station, location, channel, quality (D), year, day of year delimited by a period
+      # Filename is network, station, location, channel, QUALITY (D), year, day of year delimited by a period
       filename = ".".join([
         network,
         station,
         location,
         channel,
-        quality,
+        QUALITY,
         start_date.strftime("%Y"),
         start_date.strftime("%j")
       ])
 
       # Get the data beloning to a single day and write to the correct file
       st_day = st.slice(start_date, start_date + datetime.timedelta(days=1))
-      files.append((filename, channel + "." + quality, st_day))
+      files.append((filename, channel + "." + QUALITY, st_day))
 
       # Increment the day
       start_date += datetime.timedelta(days=1)
