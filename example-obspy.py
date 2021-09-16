@@ -16,11 +16,14 @@ if __name__ == "__main__":
   grav = read("mseed/LGZ.D/2Q.NTG04..LGZ.D.2021.249")
   show(inventory, grav)
 
-  # Read gravity channel
+  # Read tilt X channel
   grav = read("mseed/LA1.D/2Q.NTG04..LA1.D.2021.249")
   show(inventory, grav)
 
-  # Read gravity channel
+  # Read tilt Z channel
   grav = read("mseed/LA2.D/2Q.NTG04..LA2.D.2021.249")
   show(inventory, grav)
 
+  # Read temperature channel
+  grav = read("mseed/LK1.D/2Q.NTG04..LK1.D.2021.249")
+  show(inventory, grav)

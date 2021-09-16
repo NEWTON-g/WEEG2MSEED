@@ -13,6 +13,10 @@ The sampling rate of the Wee-g is 1s. The ObsPy library is used to write mSEED f
 
 The mSEED standard has four identifiers (ASCII, N bytes): network (2), station (5), location (2), and channel (3). The network is defined here as `2Q`, the station as `NTG04` (incrementing per MEMS), the location is an empty string. The channel is defined following the mSEED standard (L) because of the 1Hz sampling rate, (G) for gravimeter, and (Z) for the z-component. In total the identifier is `2Q.NTG04..LGZ`.
 
+## Metadata
+
+mSEED formally uses compressed integers (STEIM2) to store data. For this reason, measurements expressed as floats (e.g., 40.003212 degree Celcius) are converted to its integer equivalent 40003212 by multiplication by 1E6. The unit is now digital counts. This correction (i.e., gain) is also present in the metadata. When using the mSEED data, the sensitivity of this conversion needs to be removed to return to physical units.
+
 ## Example
 
     >>> from obspy import read

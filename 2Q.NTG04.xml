@@ -87,21 +87,17 @@
             <Frequency>0</Frequency>
             <InputUnits>
               <Name>CELSIUS</Name>
-              <Description>temperature in degrees Celsius</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
-              <Description>DIGITAL COUNTS</Description>
             </OutputUnits>
           </InstrumentSensitivity>
           <Stage number="1">
             <InputUnits>
               <Name>CELSIUS</Name>
-              <Description>temperature in degrees Celsius</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
-              <Description>DIGITAL COUNTS</Description>
             </OutputUnits>
             <StageGain>
               <Value>1E3</Value>
@@ -140,21 +136,17 @@
             <Frequency>0</Frequency>
             <InputUnits>
               <Name>RAD</Name>
-              <Description>TILT IN RADIANS</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
-              <Description>DIGITAL COUNTS</Description>
             </OutputUnits>
           </InstrumentSensitivity>
           <Stage number="1">
             <InputUnits>
               <Name>RAD</Name>
-              <Description>TILT IN RADIANS</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
-              <Description>DIGITAL COUNTS</Description>
             </OutputUnits>
             <StageGain>
               <Value>1E6</Value>
@@ -193,21 +185,17 @@
             <Frequency>0</Frequency>
             <InputUnits>
               <Name>MRAD</Name>
-              <Description>TILT IN RADIANS</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
-              <Description>DIGITAL COUNTS</Description>
             </OutputUnits>
           </InstrumentSensitivity>
           <Stage number="1">
             <InputUnits>
               <Name>MRAD</Name>
-              <Description>TILT IN RADIANS</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
-              <Description>DIGITAL COUNTS</Description>
             </OutputUnits>
             <StageGain>
               <Value>1E6</Value>
