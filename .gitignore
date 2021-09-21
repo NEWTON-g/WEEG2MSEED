@@ -5,3 +5,5 @@ mseed
 *.swo
 *.pyc
 __pycache__
+go.py
+iGrav16_04092021.txt

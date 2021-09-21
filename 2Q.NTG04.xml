@@ -10,7 +10,7 @@
     <Station code="NTG04" startDate="2021-09-03T00:00:00" restrictedStatus="closed">
       <Latitude>37.765890</Latitude>
       <Longitude>15.016805</Longitude>
-      <Elevation>2920</Elevation>
+      <Elevation>1735</Elevation>
       <Site>
         <Name>Serra La Nave, Astrophysical Observatory National Institute for Astrophysics (SLN)</Name>
         <Country>Italy</Country>
