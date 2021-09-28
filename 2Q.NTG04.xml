@@ -93,7 +93,7 @@
           </InstrumentSensitivity>
           <Stage number="1">
             <StageGain>
-              <Value>1E3</Value>
+              <Value>1E6</Value>
               <Frequency>0</Frequency>
             </StageGain>
           </Stage>
@@ -135,7 +135,7 @@
           </InstrumentSensitivity>
           <Stage number="1">
             <StageGain>
-              <Value>1E3</Value>
+              <Value>1E6</Value>
               <Frequency>0</Frequency>
             </StageGain>
           </Stage>
