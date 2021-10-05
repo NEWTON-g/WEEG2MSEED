@@ -1,4 +1,6 @@
 data
+compare.py
+scripts
 mseed
 .DS_STORE
 *.swp

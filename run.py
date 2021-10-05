@@ -1,6 +1,6 @@
 import os
 
-from src.weeg2mseed import convert
+from src.weeg2mseed import WEEG2MSEED
 
 if __name__ == "__main__":
 
@@ -18,9 +18,7 @@ if __name__ == "__main__":
 
   # Network identifier (NEWTON-g), station identifier (NTG04), and location ("")
   # https://www.fdsn.org/networks/detail/2Q_2020/
-  network = "2Q"
-  station = "NTG04"
-  location = ""
+  convertor = WEEG2MSEED("2Q", "NTG04", "")
 
   # Paths to (read, write) (from, to):
   path = "data"
@@ -35,11 +33,8 @@ if __name__ == "__main__":
 
     # Convert the input file to mSEED streams
     # Pass correct to add all gravity corrections
-    files = convert(
+    files = convertor.convert(
       filepath,
-      network,
-      station,
-      location,
       columns
     )
 
