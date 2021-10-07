@@ -1,13 +1,22 @@
 # Script to generate mSEED from Wee-g .grv file
 
-This script loads raw Wee-g data files and converts them to the seismological mSEED standard.
+This script loads raw Wee-g data files and converts them to the seismological mSEED standard. By default eight channels are included in the output:
+
+* CH4R (Vertical Component of Gravity (μGal) (`LGZ`)
+* AD7195_1_Ch1 (Temperature of outer thermal enclosure layer (C)) (`LK1`)
+* AD7195_1_Ch2 (Temperature of main enclosure (C)) (`LK2`)
+* AD7195_2_Ch1 (Temperature of sensor outside of enclosure, on top of the device (C)) (`LK3`)
+* AD7195_2_Ch2 (Temperature of inner thermal enclosure layer (C)) (`LK4`)
+* AD7195_3_Ch1 (Temperature of MEMS package sensor (C)) (`LK5`)
+* tilt_X (Tilt in orthogonal directions of the device) (`LA1`)
+* tilt_Z (Tilt in orthogonal directions of the device) (`LA2`)
 
 ## Usage
 Modify the input file in the `run.py` script and pass the Wee-g input file to the WEEG2MSEED Convertor class.
 
 ## Specifics
 
-The sampling rate of the Wee-g is 1s. The ObsPy library is used to write mSEED files. Data is split in to continuous segments (a full trace without gaps). Each gap introduces a new data segment with a new start time. The traces are bundled in a stream and written to a mSEED file.
+The sampling rate of the Wee-g is 1s and the ObsPy library is used to write mSEED files. Data is split in to continuous segments (a full trace without gaps > 1s). Each gap introduces a new data segment with a new start time. The traces are bundled in a stream and written to a mSEED file per day.
 
 ## Naming
 
