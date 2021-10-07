@@ -62,30 +62,23 @@ class WEEG2MSEED():
     Refer to the mSEED manual
     """
   
-    # Gravity codes
-    if name == "CH4R":
-      return ("LGZ", 1E0)
-  
-    # Temperature channels
-    elif name == "AD7195_1_Ch1":
-      return ("LK1", 1E6)
-    elif name == "AD7195_1_Ch2":
-      return ("LK2", 1E6)
-    elif name == "AD7195_2_Ch1":
-      return ("LK3", 1E6)
-    elif name == "AD7195_2_Ch2":
-      return ("LK4", 1E6)
-    elif name == "AD7195_3_Ch1":
-      return ("LK5", 1E6)
-  
-    # Tilts
-    elif name == "tilt_X":
-      return ("LA1", 1E6)
-    elif name == "tilt_Z":
-      return ("LA2", 1E6)
-  
-    else:
+    # Channel code and gain to make floating point integers fit into 32 bit
+    defs = {
+      "CH4R": ("LGZ", 1E0),
+      "AD7195_1_Ch1": ("LK1", 1E6),
+      "AD7195_1_Ch2": ("LK2", 1E6),
+      "AD7195_2_Ch1": ("LK3", 1E6),
+      "AD7195_2_Ch2": ("LK4", 1E6),
+      "AD7195_3_Ch1": ("LK5", 1E6),
+      "tilt_X": ("LA1", 1E6),
+      "tilt_Z": ("LA2", 1E6)
+    }
+
+    # Unknown
+    if name not in defs:
       raise ValueError("Invalid field %s requested." % name)
+
+    return defs[name]
 
 
   def add_trace(self, stream, timestamps, data, start, end, channel):
@@ -103,7 +96,6 @@ class WEEG2MSEED():
     print("Adding trace [%s]." % trace)
 
     # Report the timing mismatch due to irregular sampling
-
     if end is None:
       mismatch = obspy.UTCDateTime(timestamps.iloc[-1]) - trace.stats.endtime
     else:
@@ -187,16 +179,17 @@ class WEEG2MSEED():
     stream = obspy.Stream()
    
     # Map the requested data file
-    (channel, gain) = self.map_name(name)
+    channel, gain = self.map_name(name)
    
     print("Converting channel %s to %s." % (name, channel))
    
-    # Filter out NaN
+    # Filter out any NaN in the particular column
     ndf = df[~np.isnan(df[name])]
+
+    # Reference the timestamp column 
     timestamps = ndf["TIME"]
    
-    # Reference the data and convert to int32 for storage. mSEED cannot store long long (64-bit) integers.
-    # Can we think of a clever trick? STEIM2 compression (factor 3) is available for integers, not for ints.
+    # Use the gain to make floating point measurements to digital counts (as 32-bit): this is corrected for in the metadata
     data = (gain * np.array(ndf[name])).astype("int32")
    
     indices = self.get_continuous_traces(timestamps)
@@ -219,6 +212,16 @@ class WEEG2MSEED():
     self.to_files(files, channel, stream)
 
 
+  def parse_date(self, x):
+
+    """
+    def WEEG2MSEED.parse_date
+    Definition to parse the timestamp used in the Wee-g format
+    """
+
+    return datetime.datetime.strptime(x, "%Y%m%d_%H:%M:%S")
+
+
   def convert(self, filename, names):
 
     """
@@ -228,17 +231,13 @@ class WEEG2MSEED():
 
     print("Reading MEMS input file %s." % filename)
 
-    # Date parsing function
-    custom_date_parser = lambda x: datetime.datetime.strptime(x, "%Y%m%d_%H:%M:%S")
-
     # Collection of files to return after conversion
     files = list()
 
-    # Read the supplied AQG datafile to a dataframe.
-    # We use the timestamp (0) and the requested column index (see map_name)
+    # Read the supplied Wee-g datafile to a dataframe.
     try:
-      df = pd.read_csv(filename, delimiter=",", parse_dates=["TIME"], date_parser=custom_date_parser, usecols=range(0, 13))
-    except pd.errors.ParserError:
+      df = pd.read_csv(filename, parse_dates=["TIME"], date_parser=self.parse_date, usecols=range(0, 13))
+    except Exception:
       return files
 
     # Go over all the requested channels

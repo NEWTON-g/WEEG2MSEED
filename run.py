@@ -5,8 +5,8 @@ from src.weeg2mseed import WEEG2MSEED
 if __name__ == "__main__":
 
   """
-  Script to convert AQG gravimeter data to mSEED using ObsPy
-  Author: Mathijs Koymans, 2020
+  Script to convert Wee-g gravimeter data to mSEED using ObsPy
+  Author: Mathijs Koymans, 2021
   """
 
   # Columns to write to mSEED: each will be a channel
