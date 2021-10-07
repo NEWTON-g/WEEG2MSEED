@@ -3,7 +3,7 @@
 This script loads raw Wee-g data files and converts them to the seismological mSEED standard.
 
 ## Usage
-Modify the input file in the `run.py` script. An example AQG input file is given: `NTG04.20210903.grv` that is written to `2Q.NTG04..MGZ.D.2020.252`.
+Modify the input file in the `run.py` script and pass the Wee-g input file to the WEEG2MSEED Convertor class.
 
 ## Specifics
 
