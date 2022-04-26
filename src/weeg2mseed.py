@@ -8,7 +8,7 @@ class WEEG2MSEED():
   """
   Class to convert Wee-g gravimeter data to mSEED using ObsPy
   Author: Mathijs Koymans, KNMI
-  Last Updated: Oct. 2021
+  Last Updated: Apr. 2022
   """
 
   # Sample rate is 1.0
@@ -64,6 +64,7 @@ class WEEG2MSEED():
   
     # Channel code and gain to make floating point integers fit into 32 bit
     defs = {
+      "CH3R": ("LGZ", 1E0),
       "CH4R": ("LGZ", 1E0),
       "AD7195_1_Ch1": ("LK1", 1E6),
       "AD7195_1_Ch2": ("LK2", 1E6),
@@ -236,7 +237,7 @@ class WEEG2MSEED():
 
     # Read the supplied Wee-g datafile to a dataframe.
     try:
-      df = pd.read_csv(filename, parse_dates=["TIME"], date_parser=self.parse_date, usecols=range(0, 13))
+      df = pd.read_csv(filename, parse_dates=["TIME"], date_parser=self.parse_date)
     except Exception:
       return files
 

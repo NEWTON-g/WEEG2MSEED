@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
   """
   Script to convert Wee-g gravimeter data to mSEED using ObsPy
-  Author: Mathijs Koymans, 2021
+  Author: Mathijs Koymans, 2022
   """
 
   # Columns to write to mSEED: each will be a channel
@@ -27,6 +27,9 @@ if __name__ == "__main__":
   for file in os.listdir(path):
 
     if file.startswith("."):
+      continue
+
+    if not "NTG04" in file:
       continue
 
     filepath = os.path.join(path, file)
